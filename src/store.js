@@ -1,9 +1,6 @@
-import { combineReducers, createStore } from "./wstore/"
-// import { combineReducers, createStore } from "redux"
+import { combineReducers, createStore } from "react_lite_store";
+import { formReducer } from "./reducers/formReducer";
 
-import { reducerOne } from "./reducers/reducerOne"
-import { reducerTwo } from "./reducers/reducerTwo"
-
-const rootReducer = combineReducers({ reducerOne, reducerTwo })
-const store = createStore(rootReducer)
-export default store
+const rootReducer = combineReducers({ formReducer });
+const store = createStore(rootReducer);
+export default store;

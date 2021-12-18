@@ -1,50 +1,92 @@
-import "./styles.css"
-
-import { useSelector } from "./wstore"
-
-import store from "./store"
+import { useDispatch, useSelector } from "react_lite_store";
+import "./styles.css";
 
 export default function App() {
-	return (
-		<div className="App">
-			<ComponentOne />
-
-			<br />
-			<br />
-			<br />
-			<br />
-			<ComponentTwo />
-		</div>
-	)
+  return (
+    <div className={"row-center app"}>
+      <div className="container">
+        <Form />
+        <div className="form-view">
+          <FormView />
+        </div>
+      </div>
+    </div>
+  );
 }
 
-const ComponentOne = () => {
-	const no = useSelector((state) => {
-		return state.reducerTwo.no
-	})
+const fields = [
+  { placeholder: "Enter Name", key: "name" },
+  {
+    placeholder: "Enter Last Name",
+    key: "lastName",
+  },
+  {
+    placeholder: "Enter Email",
+    key: "email",
+  },
+  {
+    placeholder: "Enter Contact Number",
+    key: "contactNo",
+  },
+];
 
-	return (
-		<button
-			onClick={() => {
-				store.dispatch({ type: "SET_NO", no: no + 3 })
-			}}
-		>
-			Add 3
-		</button>
-	)
-}
+const Form = () => {
+  const dispatch = useDispatch();
+  const form = useSelector((state) => {
+    return state.formReducer;
+  });
 
-const ComponentTwo = () => {
-	const char = useSelector((state) => state.reducerOne.char)
-	console.log({ char })
+  const onChange = (e) => {
+    dispatch({
+      type: "SET_FORM_FIELD",
+      field: e.target.id,
+      value: e.target.value,
+    });
+  };
+  return (
+    <div className={"row-center"}>
+      <div className="col">
+        {fields.map((field, index) => {
+          return (
+            <input
+              key={field.key}
+              id={field.key}
+              placeholder={field.placeholder}
+              name={field.key}
+              onChange={onChange}
+              value={form[field.key] || ""}
+            />
+          );
+        })}
+        <div className="footer">
+          <button>Submit</button>
+          <button
+            onClick={() => {
+              dispatch({ type: "CLEAR_FORM" });
+            }}
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-	return (
-		<button
-			onClick={() => {
-				store.dispatch({ type: "SET_CHAR", char: char + "T" })
-			}}
-		>
-			Add T
-		</button>
-	)
-}
+const FormView = () => {
+  const form = useSelector((state) => {
+    return state.formReducer;
+  });
+
+  const { name, lastName, email, contactNo } = form;
+  return (
+    <div className={"row-center"}>
+      <div className="col">
+        <span>Name : {name}</span>
+        <span>Last Name : {lastName}</span>
+        <span>Email : {email}</span>
+        <span>Contact Number : {contactNo}</span>
+      </div>
+    </div>
+  );
+};

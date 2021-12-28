@@ -67,6 +67,14 @@ const Form = () => {
           >
             Clear
           </button>
+          <button
+            onClick={() => {
+              dispatch({ type: "CLEAR_FORM" });
+            }}
+          >
+          Submit
+          </button>
+          
         </div>
       </div>
     </div>
